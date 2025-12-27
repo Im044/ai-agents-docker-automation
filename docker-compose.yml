@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # Content Creator Agent - AI-powered content generation
+  ai-content-creator-agent:
+    build:
+      context: ./agents/content-creator
+      dockerfile: Dockerfile
+    container_name: content-creator-agent
+    ports:
+      - "8001:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AGENT_NAME=ContentCreator
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data/content-creator:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ai-agents-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Data Analyst Agent - Advanced data analysis and insights
+  ai-data-analyst-agent:
+    build:
+      context: ./agents/data-analyst
+      dockerfile: Dockerfile
+    container_name: data-analyst-agent
+    ports:
+      - "8002:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AGENT_NAME=DataAnalyst
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data/analyst:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ai-agents-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Research Agent - Literature review and knowledge synthesis
+  ai-research-agent:
+    build:
+      context: ./agents/research
+      dockerfile: Dockerfile
+    container_name: research-agent
+    ports:
+      - "8003:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AGENT_NAME=ResearchAgent
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data/research:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ai-agents-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Code Assistant Agent - AI-powered code generation and debugging
+  ai-code-assistant-agent:
+    build:
+      context: ./agents/code-assistant
+      dockerfile: Dockerfile
+    container_name: code-assistant-agent
+    ports:
+      - "8004:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AGENT_NAME=CodeAssistant
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data/code-assistant:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ai-agents-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Sales/Marketing Agent - Lead generation and campaign optimization
+  ai-sales-marketing-agent:
+    build:
+      context: ./agents/sales-marketing
+      dockerfile: Dockerfile
+    container_name: sales-marketing-agent
+    ports:
+      - "8005:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AGENT_NAME=SalesMarketing
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data/sales-marketing:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ai-agents-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  ai-agents-network:
+    driver: bridge
+
+volumes:
+  data:
+  logs:
